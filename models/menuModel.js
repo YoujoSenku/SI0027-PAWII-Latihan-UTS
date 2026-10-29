@@ -18,7 +18,69 @@
 const mongoose = require("mongoose");
 
 // TODO A1: buat schema subdocument gizi
-// TODO A2: buat menuSchema
-// TODO A3: export model dengan nama "Menu"
+const giziSchema = new mongoose.Schema({
+    kalori: {
+        type: Number,
+        required: [true, 'Kalori wajib diisi'],
+        min: [0, 'Kalori minimal 0'],
+        max: [5000, 'Kalori maksimal 5000']
+    },
+    protein: {
+        type: Number,
+        min: [0, 'Protein tidak boleh negatif'],
+        default: 0
+    }, 
+}, {_id: false});
 
-module.exports = {};
+// TODO A2: buat menuSchema
+const menuSchema = new mongoose.Schema({
+    nama: { 
+        type: String, 
+        required: [true, 'nama wajib diisi'], 
+        trim: true
+    },
+    kode: { 
+        type: String, 
+        required: [true, 'kode wajib diisi'], 
+        unique: true, 
+        validate: { 
+            validator: function(v) { 
+                return /^MN-\d{6}$/.test(v);
+            } 
+        }
+    },
+    bahan: { 
+        type: [String], 
+        validate: {
+            validator: function(v) {
+                return this.validator.length >= 1;
+            },
+            message: 'minimal harus terdapat 1 bahan',
+        }, 
+    },
+    gizi: {
+        type: giziSchema,
+        required: [true, 'data gizi wajib diisi'],
+    },
+    harga: {
+        type: Number,
+        required: [true, 'harga wajib diisi'],
+        min: [0, 'Harga tidak boleh negatif'],
+    },
+    kantinId: {
+        type: mongoose.Schema.Types.Objectid,
+        ref: 'Kantin',
+        required: [true, 'kantinId wajib diisi'],
+    },
+    tersedia: {
+        type: Boolean,
+        default: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    }
+});
+
+// TODO A3: export model dengan nama "Menu"
+module.exports = mongoose.model('Menu', menuSchema);
