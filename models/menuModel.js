@@ -53,7 +53,7 @@ const menuSchema = new mongoose.Schema({
         type: [String], 
         validate: {
             validator: function(v) {
-                return this.validator.length >= 1;
+                return Array.isArray(v) && v.length >= 1;
             },
             message: 'minimal harus terdapat 1 bahan',
         }, 
@@ -68,7 +68,7 @@ const menuSchema = new mongoose.Schema({
         min: [0, 'Harga tidak boleh negatif'],
     },
     kantinId: {
-        type: mongoose.Schema.Types.Objectid,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Kantin',
         required: [true, 'kantinId wajib diisi'],
     },

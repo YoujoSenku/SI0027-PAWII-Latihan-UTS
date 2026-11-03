@@ -91,8 +91,8 @@ Cari komentar `TODO` di source code. Bagian lain sudah tersedia lengkap.
 
 - [ Selesai ] **A. Model** - `models/menuModel.js` (schema Menu, embedded & referencing, validasi)
 - [ Selesai ] **B. Controller Menu** - `controllers/menuController.js` (`getAll`, `getById`, `create`, `update`, `remove`)
-- [ ] **C. Routing** - `routes/menuRoutes.js` dan pendaftaran route pada `app.js`
-- [ ] **D. Error handling terpusat** - `middlewares/errorHandler.js` dan pendaftarannya pada `app.js`
+- [ Selesai ] **C. Routing** - `routes/menuRoutes.js` dan pendaftaran route pada `app.js`
+- [ Selesai ] **D. Error handling terpusat** - `middlewares/errorHandler.js` dan pendaftarannya pada `app.js`
 - [ ] **E. Pengujian otomatis** - seluruh request pada Postman collection **lulus** (lihat bagian di bawah)
 
 ## Menjalankan Project

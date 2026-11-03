@@ -26,23 +26,19 @@ exports.getAll = async (req, res) => {
   }
 
   const page = Math.max(parseInt(req.query.page) || 1, 1);
-  const limit = matchMedia.min(parseInt(req.query.limit) || 10, MAX_LIMIT);
-  const sortField = req.quert.sort || 'createdAt';
+  const limit = Math.min(parseInt(req.query.limit) || 10, MAX_LIMIT);
+  const sortField = req.query.sort || 'createdAt';
   const projection = req.query.fields ? req.query.fields.split(",").join(" ") : "";
 
-  try{
-    const data = await Menu.find(filter)
-        .populate("kantinId")
-        .select(projection)
-        .sort({ [sortField]: 1 })
-        .skip((page - 1) * limit)
-        .limit(limit);
-    const total = await Menu.countDocuments();
+  const data = await Menu.find(filter)
+      .populate("kantinId")
+      .select(projection)
+      .sort({ [sortField]: 1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+  const total = await Menu.countDocuments(filter);
 
-    res.json({ data, page, limit, total });
-  }catch(error){
-    res.status(500).json({message: "Error : Terjadi Kesalahan pada Server"});
-  }
+  res.json({ data, page, limit, total });
 };
 
 // GET /menu/:id
@@ -51,13 +47,9 @@ exports.getAll = async (req, res) => {
 //   - format id salah -> 400 (ditangani errorHandler lewat CastError)
 exports.getById = async (req, res, next) => {
   // TODO B2
-  try{
-    const data = await Menu.findById(req.params.id).populate("kantinId");  
-    if (!data) throw { status: 404, message: "Data Tidak ditemukan" };
-    res.json(data);
-  }catch(error){
-    next(error);
-  }
+  const data = await Menu.findById(req.params.id).populate("kantinId");  
+  if (!data) throw { status: 404, message: "Data Tidak ditemukan" };
+  res.json(data);
 };
 
 // POST /menu
@@ -65,13 +57,8 @@ exports.getById = async (req, res, next) => {
 //   - validasi gagal / ISBN duplikat -> 400 (ditangani errorHandler)
 exports.create = async (req, res, next) => {
   // TODO B3
-  try{
-    const menu = await Menu.create(req.body);
-    
-    res.status(201).json(menu);
-  }catch(error){
-    next(error);
-  }
+  const menu = await Menu.create(req.body);  
+  res.status(201).json(menu);
 };
 
 // PUT /menu/:id
@@ -80,17 +67,12 @@ exports.create = async (req, res, next) => {
 //   - tidak ada -> 404 { message }
 exports.update = async (req, res, next) => {
   // TODO B4
-  try{
-    const data = await Menu.findByIdAndUpdate(req.params.id, req.body, {
+  const data = await Menu.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
   if (!data) throw { status: 404, message: "Data Tidak ditemukan" };
   res.status(200).json(data);
-  }catch(error){
-    next(error);
-  }
-  
 };
 
 // DELETE /menu/:id
@@ -98,13 +80,7 @@ exports.update = async (req, res, next) => {
 //   - tidak ada -> 404 { message }
 exports.remove = async (req, res, next) => {
   // TODO B5
-  try{
-    const data = await Menu.findByIdAndDelete(req.params.id);
-    if (!data) throw { status: 404, message: "Data Tidak ditemukan" };
-    res.status(204).send();
-  }catch(error){
-    next(error);
-  }
-  
-
+  const data = await Menu.findByIdAndDelete(req.params.id);
+  if (!data) throw { status: 404, message: "Data Tidak ditemukan" };
+  res.status(204).send();
 };
