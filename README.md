@@ -93,7 +93,7 @@ Cari komentar `TODO` di source code. Bagian lain sudah tersedia lengkap.
 - [ Selesai ] **B. Controller Menu** - `controllers/menuController.js` (`getAll`, `getById`, `create`, `update`, `remove`)
 - [ Selesai ] **C. Routing** - `routes/menuRoutes.js` dan pendaftaran route pada `app.js`
 - [ Selesai ] **D. Error handling terpusat** - `middlewares/errorHandler.js` dan pendaftarannya pada `app.js`
-- [ ] **E. Pengujian otomatis** - seluruh request pada Postman collection **lulus** (lihat bagian di bawah)
+- [ Selesai ] **E. Pengujian otomatis** - seluruh request pada Postman collection **lulus** (lihat bagian di bawah)
 
 ## Menjalankan Project
 
